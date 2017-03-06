@@ -70,6 +70,10 @@ def main(argv):
     test_proj = CVsProject(name=config["name"],
         guid="{8059B6CC-7DB0-4243-8ACF-5271D6F2E1E0}")
     test_proj_filters = CVsProjectFilters(args.srcdir)
+    # Add srcdir to each configuration includes and forced_inc
+    for conf in config["configures"]:
+        conf.includes = [os.path.join(args.srcdir, i) for i in conf.includes]
+        conf.forced_inc = [os.path.join(args.srcdir, i) for i in conf.includes]
     # Add project configurations
     for i in config["configures"]:
         test_proj.add_config(i)
