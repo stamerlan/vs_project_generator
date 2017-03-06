@@ -2,7 +2,7 @@ import uuid
 import xml.etree.cElementTree as xml_tree
 
 class CVsProjectConfiguration:
-    """Project configuration struct
+    """Project configuration structure
 
     Properties:
       - name: Configuration name
@@ -100,6 +100,8 @@ class CVsProject:
         xml_tree.SubElement(node, "UseDebugLibraries").text = "false"
         xml_tree.SubElement(node, "PlatformToolset").text = "v140"
 
+        # Need to be placed after PropertyGroup Label="Globals", but before
+        # Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"
         self._xml.insert(2, node)
 
         node = xml_tree.SubElement(self._xml, "PropertyGroup",
@@ -122,6 +124,8 @@ class CVsProject:
         Parameters:
           - fpath: path to file relative to project dir
         """
+
+        # TODO: The same code in CVsProjectFilters.add_file()
         if fpath.endswith(".txt"):
             ftype = "Text"
         elif fpath.endswith(".h") or fpath.endswith(".hpp"):

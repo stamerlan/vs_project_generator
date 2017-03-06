@@ -8,6 +8,7 @@ import fnmatch
 import xml.etree.cElementTree as xml_tree
 from CVsProject import CVsProject
 from CVsProject import CVsProjectConfiguration
+from CVsProjectFilters import CVsProjectFilters
 
 # TODO: Load configurations from file
 # TODO: Solution generator
@@ -68,6 +69,7 @@ def main(argv):
     # Create project
     test_proj = CVsProject(name=config["name"],
         guid="{8059B6CC-7DB0-4243-8ACF-5271D6F2E1E0}")
+    test_proj_filters = CVsProjectFilters(args.srcdir)
     # Add project configurations
     for i in config["configures"]:
         test_proj.add_config(i)
@@ -78,9 +80,12 @@ def main(argv):
         files = [f for f in files if not re.match(excludes_regex, f)]
 
         for fname in files:
-            test_proj.add_file(os.path.join(root, fname))
+            fpath = os.path.join(root, fname)
+            test_proj.add_file(fpath)
+            test_proj_filters.add_file(fpath)
 
     write_xml(test_proj._xml, config["name"] + ".vcxproj")
+    write_xml(test_proj_filters._xml, config["name"] + ".vcxproj.filters")
 
 if __name__ == "__main__":
     main(sys.argv)
