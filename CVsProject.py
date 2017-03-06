@@ -99,13 +99,15 @@ class CVsProject:
         xml_tree.SubElement(node, "ConfigurationType").text = "Makefile"
         xml_tree.SubElement(node, "UseDebugLibraries").text = "false"
         xml_tree.SubElement(node, "PlatformToolset").text = "v140"
+        xml_tree.SubElement(node, "IntermediateOutputPath").text = \
+            "$(ProjectDir)"
 
-        # Need to be placed after PropertyGroup Label="Globals", but before
-        # Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"
-        self._xml.insert(2, node)
+        # Need to be placed after
+        # "Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props", but
+        # before "Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"
+        self._xml.insert(3, node)
 
-        node = xml_tree.SubElement(self._xml, "PropertyGroup",
-            {"Condition": condition})
+        node = xml_tree.Element("PropertyGroup", {"Condition": condition})
         xml_tree.SubElement(node, "NMakeBuildCommandLine").text = config.build
         xml_tree.SubElement(node, "NMakeCleanCommandLine").text = config.clean
         if config.defines:
@@ -117,6 +119,12 @@ class CVsProject:
         if config.forced_inc:
             s = ";".join(config.forced_inc) + ";$(NMakeForcedIncludes)"
             xml_tree.SubElement(node, "NMakeForcedIncludes").text = s
+        xml_tree.SubElement(node, "OutDir").text = "$(IntermediateOutputPath)"
+
+        # Need to be placed before
+        # "Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets""
+        # "<ImportGroup Label="ExtensionTargets" />"
+        self._xml.insert(-2, node)
 
     def add_file(self, fpath):
         """Add file to project
