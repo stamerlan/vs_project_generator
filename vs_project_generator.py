@@ -73,7 +73,7 @@ def main(argv):
     # Add srcdir to each configuration includes and forced_inc
     for conf in config["configures"]:
         conf.includes = [os.path.join(args.srcdir, i) for i in conf.includes]
-        conf.forced_inc = [os.path.join(args.srcdir, i) for i in conf.includes]
+        conf.forced_inc = [os.path.join(args.srcdir, i) for i in conf.forced_inc]
     # Add project configurations
     for i in config["configures"]:
         test_proj.add_config(i)
