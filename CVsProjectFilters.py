@@ -45,17 +45,18 @@ class CVsProjectFilters:
         for i in range(1, len(components)): # the last one is file name
             self._add_filter('\\'.join(components[:i]))
 
-            if file_path.endswith(".txt"):
-                ftype = "Text"
-            elif file_path.endswith(".h") or file_path.endswith(".hpp"):
-                ftype = "ClInclude"
-            elif file_path.endswith(".c") or file_path.endswith(".cpp"):
-                ftype = "ClCompile"
-            else:
-                ftype = "None"
+        if file_path.endswith(".txt"):
+            ftype = "Text"
+        elif file_path.endswith(".h") or file_path.endswith(".hpp"):
+            ftype = "ClInclude"
+        elif file_path.endswith(".c") or file_path.endswith(".cpp"):
+            ftype = "ClCompile"
+        else:
+            ftype = "None"
 
-            node = xml_tree.SubElement(self._files, ftype,
-                {"Include": file_path})
+        node = xml_tree.SubElement(self._files, ftype,
+            {"Include": file_path})
+        if (len(components[:-1]) > 1):
             xml_tree.SubElement(node, "Filter").text = \
                 '\\'.join(components[:-1])
 
