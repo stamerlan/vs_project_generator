@@ -56,7 +56,7 @@ class CVsProjectFilters:
 
         node = xml_tree.SubElement(self._files, ftype,
             {"Include": file_path})
-        if (len(components[:-1]) > 1):
+        if (len(components[:-1]) > 0):
             xml_tree.SubElement(node, "Filter").text = \
                 '\\'.join(components[:-1])
 
