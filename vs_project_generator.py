@@ -1,4 +1,4 @@
-""" Generator of visual studio 2015 makefile projects """
+﻿""" Generator of visual studio 2015 makefile projects """
 
 import sys
 import os
@@ -78,10 +78,14 @@ def main(argv):
     for i in config["configures"]:
         test_proj.add_config(i)
     # Add files to project
-    excludes_regex = r'|'.join([fnmatch.translate(x) for x in config["exclude_files"]])
+    exclude_files_regex = r'|'.join(
+        [fnmatch.translate(file_regex) for file_regex in config["exclude_files"]])
+    exclude_dirs_regex = r'|'.join(
+        [fnmatch.translate(os.path.join(args.srcdir, dir_regex)) for dir_regex in config["exclude_dirs"]])
     for root, dirs, files in os.walk(args.srcdir, topdown=True):
-        dirs[:] = [d for d in dirs if d not in config["exclude_dirs"]]
-        files = [f for f in files if not re.match(excludes_regex, f)]
+        if re.match(exclude_dirs_regex, root):
+            continue
+        files = [f for f in files if not re.match(exclude_files_regex, f)]
 
         for fname in files:
             fpath = os.path.join(root, fname)
