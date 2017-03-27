@@ -9,9 +9,10 @@ import xml.etree.cElementTree as xml_tree
 from CVsProject import CVsProject
 from CVsProject import CVsProjectConfiguration
 from CVsProjectFilters import CVsProjectFilters
+from CVsSolution import CVsSolution
 
-# TODO: Load configurations from file
-# TODO: Solution generator
+# TODO: Add readme
+# TODO: Add config file description and example
 
 def write_xml(xml, filename):
     """Write xml to file
@@ -80,6 +81,8 @@ def main(argv):
     guid = config.findtext("GUID")
     proj = CVsProject(name=project_name, guid=guid)
     proj_filters = CVsProjectFilters(args.srcdir)
+    sln = CVsSolution(name=project_name)
+    sln.add_project(proj)
 
     # Load ProjectConfig/exclude_files
     exclude_files = load_list(config, "ExcludeFiles")
@@ -109,7 +112,7 @@ def main(argv):
         forced_inc = common_forced_inc + \
             [os.path.join(args.srcdir, i) for i in load_list(conf, "ForcedIncludes")]
 
-        proj.add_config(CVsProjectConfiguration(
+        cfg_obj = CVsProjectConfiguration(
             name=conf.attrib["name"],
             platform=platform,
             build=build,
@@ -117,7 +120,9 @@ def main(argv):
             defines=defines,
             includes=includes,
             forced_inc=forced_inc)
-        )
+
+        proj.add_config(cfg_obj)
+        sln.add_config(proj, cfg_obj)
 
     # Add files to project
     exclude_files_regex = r'|'.join(
@@ -137,6 +142,8 @@ def main(argv):
     # Write output
     write_xml(proj._xml, project_name + ".vcxproj")
     write_xml(proj_filters._xml, project_name + ".vcxproj.filters")
+    with open(project_name + ".sln", "wb") as f:
+        f.write(sln.gen_solution())
 
 if __name__ == "__main__":
     main(sys.argv)

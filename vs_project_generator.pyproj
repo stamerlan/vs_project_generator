@@ -34,6 +34,9 @@
     <Compile Include="CVsProjectFilters.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CVsSolution.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="vs_project_generator.py" />
   </ItemGroup>
   <ItemGroup>

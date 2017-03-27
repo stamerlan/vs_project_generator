@@ -147,3 +147,20 @@ class CVsProject:
 
         xml_tree.SubElement(self._itemgroup, ftype, {"Include": fpath})
 
+    def get_name(self):
+        """Get project name
+
+        Return:
+          (string) project name
+        """
+
+        return self._name
+
+    def get_guid(self):
+        """Get project GUID
+
+        Return:
+          (string) project GUID
+        """
+
+        return self._guid
