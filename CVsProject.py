@@ -1,4 +1,4 @@
-import uuid
+﻿import uuid
 import xml.etree.cElementTree as xml_tree
 
 class CVsProjectConfiguration:
@@ -49,6 +49,8 @@ class CVsProject:
         try:
             self._guid = kwargs["guid"]
         except KeyError:
+            self._guid = None
+        if self._guid is None:
             self._guid = "{" + str(uuid.uuid4()).upper() + "}"
 
         self._xml = xml_tree.Element('Project',
@@ -65,7 +67,7 @@ class CVsProject:
         xml_tree.SubElement(node, "ProjectGuid").text = self._guid
         xml_tree.SubElement(node, "Keyword").text = "MakeFileProj"
 
-        xml_tree.SubElement(self._xml, "Import", 
+        xml_tree.SubElement(self._xml, "Import",
             {"Project": "$(VCTargetsPath)\Microsoft.Cpp.Default.props"})
         xml_tree.SubElement(self._xml, "Import",
             {"Project": "$(VCTargetsPath)\Microsoft.Cpp.props"})
