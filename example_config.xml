@@ -1,0 +1,78 @@
+<ProjectConfig name="test">
+  <GUID>{8059B6CC-7DB0-4243-8ACF-5271D6F2E1E0}</GUID>
+  <!-- Project file GUID. if not set it will be generated automatically -->
+  <ExcludeFiles>
+    <!-- Files to be excluded from project -->
+    <file>*.sln</file>
+    <file>*.vcxproj</file>
+    <file>*.vcxproj.filters</file>
+  </ExcludeFiles>
+  <ExcludeDirs>
+    <!-- Directories to be excluded from project -->
+    <dir>.vs</dir>
+    <dir>.git</dir>
+    <dir>msvc</dir>
+    <dir>tests\logs</dir>
+  </ExcludeDirs>
+
+  <Configures>
+    <!-- Project configurations
+    Common for all project configurations settings could be set here.
+    Valid tags:
+      - Platform: Visual Studio platform (usually x86 is ok)
+      - Build: build command line
+      - Clean: clean command line
+      - Defines: list of defines common for all projects
+      - Includes: list of includes common for all projects
+      - ForcedIncludes: list of forced includes common for all projects
+    -->
+    <Platform>x86</Platform>
+    <Build>
+      cd ..
+      make
+    </Build>
+    <Clean>
+      cd ..
+      make clean
+    </Clean>
+    <Defines>
+      <define>VS_PROJECT=1</define>
+    </Defines>
+    <Includes>
+      <dir>include</dir>
+      <dir>src\include</dir>
+    </Includes>
+    <ForcedIncludes>
+      <file>msvc\intellisence.h</file>
+    </ForcedIncludes>
+
+    <Config name="feature1">
+      <!-- Project configuration.
+      All tags used in common are valid here:
+        - Tags Platform/Build/Clean: replaces common value
+        - Tags Defines/Includes/ForcedIncludes: additional values for this
+          configuration
+      -->
+      <Defines>
+        <define>CONFIG_FEATURE1</define>
+      </Defines>
+      <Includes>
+        <dir>features\conf1</dir>
+      </Includes>
+    </Config>
+
+    <Config name="feature1_feature2">
+      <!-- Project configuration.
+      It is another project configuration
+      -->
+      <Defines>
+        <define>CONFIG_FEATURE1</define>
+        <define>CONFIG_FEATURE2</define>
+      </Defines>
+      <Includes>
+        <dir>features\conf1</dir>
+        <dir>features\conf2</dir>
+      </Includes>
+    </Config>
+  </Configures>
+</ProjectConfig>

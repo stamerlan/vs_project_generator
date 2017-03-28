@@ -1,0 +1,14 @@
+Script to generate visual studio project files.
+
+It could be used to compile embedded projects using visual studio.
+
+How to use:
+ 1. Create configuration file describing project/build command line and etc.
+    For configuration file see example_config.xml
+ 2. Change current working directory to directory where project files should be
+    generated (it could be separate from project sources)
+ 3. Run script:
+    ./vs_project_generator.py --srcdir=SOURCES_ROOT_DIR --config=CONFIG_FILE
+
+Requirements:
+  - Python 2.7
