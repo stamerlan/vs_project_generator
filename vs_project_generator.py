@@ -127,12 +127,12 @@ def main(argv):
     # Add files to project
     exclude_files_regex = r'|'.join(
         [fnmatch.translate(file_regex) for file_regex in exclude_files])
-    exclude_dirs_regex = r'|'.join(
-        [fnmatch.translate(os.path.join(args.srcdir, dir_regex)) for dir_regex in exclude_dirs])
+    exclude_dirs = tuple([os.path.join(args.srcdir, dir) + os.path.sep
+                          for dir in exclude_dirs])
     for root, dirs, files in os.walk(args.srcdir, topdown=True):
-        if re.match(exclude_dirs_regex, root) and exclude_dirs:
+        if (root + os.path.sep).startswith(exclude_dirs):
             continue
-        if exclude_files:
+        if exclude_files: # if there are any files to exclude
             files = [f for f in files if not re.match(exclude_files_regex, f)]
 
         for fname in files:
