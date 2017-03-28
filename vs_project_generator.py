@@ -130,9 +130,10 @@ def main(argv):
     exclude_dirs_regex = r'|'.join(
         [fnmatch.translate(os.path.join(args.srcdir, dir_regex)) for dir_regex in exclude_dirs])
     for root, dirs, files in os.walk(args.srcdir, topdown=True):
-        if re.match(exclude_dirs_regex, root):
+        if re.match(exclude_dirs_regex, root) and exclude_dirs:
             continue
-        files = [f for f in files if not re.match(exclude_files_regex, f)]
+        if exclude_files:
+            files = [f for f in files if not re.match(exclude_files_regex, f)]
 
         for fname in files:
             fpath = os.path.join(root, fname)
