@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # Python compiled
 *.pyc
+
+# Configures for projects
+configs/
